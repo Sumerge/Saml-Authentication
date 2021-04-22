@@ -15,15 +15,87 @@ Brief Introduction for Saml2 Sign In
 
 # Library&#39;s role
 
-The Saml authentication core library will mange the redirections, and necessary handshaking, as well as response parsing and validating and store the user data in session claims.
+The Saml authentication core library will mange the redirections, and necessary handshaking, as well as response parsing and validating and fethcing the user data recivied from idp.
 
 # How to use the library.
 
-Using the library is very simple and only contains two steps.
+Using the library is very simple and only contains three steps.
 
 First, you need to import the library
 
 Second you need to add your SP and idp s configurations.
+
+Third you need to copy and paste the following controller ( Add your business logic in the commented section which mentions add here)
+
+```C#
+public class SSOAuthController : ApiController
+    {
+
+        private SamlConfig SumergeConfig = new SamlConfig();
+        [HttpGet]
+        public void Login()
+        {
+            string RedirectUrl = SumergeConfig.GenerateSamlAuthRedirectionUrl();
+            HttpContext.Current.Response.Redirect(RedirectUrl);
+        }
+        [HttpPost]
+        [Route("acs")]
+        public bool ParseACSResponse(FormDataCollection form)
+        {
+                string response = form.Get("SAMLResponse");
+                PostLoginResponseParser LoginParser = SumergeConfig.ParseLoginResponse(response);
+                if (LoginParser.ValidateSignature())
+                {
+                    //Add your Portal Auhtneication Logic
+					// Claims can be obtained using 
+					//LoginParser.SamlResponse.Assertion.AttributeStatement;
+					
+                }
+                else
+                {
+                    throw new Exception("InValidCertificate");
+                }
+        }
+
+
+
+
+
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("logout")]
+        public void ParseLogoutResponse(FormDataCollection form)
+        {
+            string response = null;
+            PostLogoutResponseParser LogoutParse = null;
+            try
+            {
+                log.Info("Entering ParseLogoutResponse with FORM Params" + form);
+                response = form.Get("SAMLResponse");
+                LogoutParse = SumergeConfig.ParseLogoutResponse(response);
+                if (LogoutParse.ValidateSignature())
+                {
+					/// DELETE ADDTIONAL COOKIES HERE
+					
+                    HttpContext.Current.Response.SumergeConfig.PostLogoutURL;
+                }
+                else
+                {
+                    throw new Exception("InValidCertificate");
+                }
+            }
+            catch (Exception e)
+            {
+                log.Error("Error @ ParseACSResponse " + e);
+                throw new HttpResponseException(HttpStatusCode.Unauthorized);
+            }
+            
+        }
+
+           
+    }
+
+```
 
 ## Setting the Configuration
 
@@ -41,6 +113,7 @@ In the Web.Config Section the following Keys need to be added.
 
 In the Project route config, we need to add the following route configuration if it doesn&#39;t exists
 
+```C#
 config.Routes.MapHttpRoute(
 
 name: &quot;Saml2&quot;,
@@ -48,7 +121,7 @@ name: &quot;Saml2&quot;,
 routeTemplate: &quot;{controller}/{action}&quot;
 
 );
-
+```
 ## Initiating the Request
 
 - In initiating the login request is simple as calling a get function.
