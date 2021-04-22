@@ -15,7 +15,7 @@ Brief Introduction for Saml2 Sign In
 
 # Library&#39;s role
 
-The Saml authentication core library will mange the redirections, and necessary handshaking, as well as response parsing and validating and fethcing the user data recivied from idp.
+The Saml authentication core library will manage the redirections, and necessary handshaking, as well as response parsing and validating and fetching the user data received from idp.
 
 # How to use the library.
 
