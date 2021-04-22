@@ -116,12 +116,19 @@ In the Project route config, we need to add the following route configuration if
 ```C#
 config.Routes.MapHttpRoute(
 
-name: &quot;Saml2&quot;,
+name: Saml2,
 
-routeTemplate: &quot;{controller}/{action}&quot;
+routeTemplate: {controller}/{action}
 
 );
 ```
+The SamlConfig can also be configured using a parameterized construtor as well 
+
+```
+ public SamlConfig(string ACSURL, string Issuer, String Destination, string EntityId, string SigningCertifcatePath, string SigningCertPass, string PublicCertificatePath)
+        
+		```
+
 ## Initiating the Request
 
 - In initiating the login request is simple as calling a get function.
@@ -129,3 +136,42 @@ routeTemplate: &quot;{controller}/{action}&quot;
   - Then will initiate and redirect to the identity provider.
   - On successful login and request will be redirected to to the Post Login URL and can obtain the user info from the stored claims.
 - In case for logouts, the request will hit the Saml Authentication core and on successful call will redirect a call to the configured post logout url , where the SP can terminate its local session and cookies.
+
+
+
+# Certificate Installation Step
+
+This section explains the step need to install the PFX certificate on the machines.
+
+- Starting by righting click on certificate in click install PFX, with admin rights
+- Chose the Store Location to be **LOCAL MACHINE**
+- Enter the password if Any
+- Select the Certificate Store to be custom
+  - Press the Browser Option and choose **Personal**
+
+- Finalize the remaining and press finish
+
+Once successfully installed, we need to give IIS the certificate rights
+
+## IIS Certificate Control access
+
+- Open **Manage Computer Certificates**
+- Find the installed certificate in **personal**
+
+- Right click on the certificate and choose
+  - All Tasks
+    - **Mange Private Keys**
+
+- A pop up will open, saying to SELECT USER just press the **advanced** button
+- A new window will open click on **Select a Principal**
+- From the location tab change the **location** to be the master machine ie the **Node Name**
+- Press the **Find now** button and Search results will appear
+- Find the **User IIS\_USER** and choose
+
+- Give the IIS\_USER full perssion **FULL CONTROL** and **READ**
+
+## Load User Profile Step
+
+- Once that is completed go to the IIS server and open the Portal Application pool.
+- Go to Advanced Pool Settings
+- Go to Process Model and set **Load User Profile** to **TRUE**
