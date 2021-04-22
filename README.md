@@ -4,7 +4,7 @@ Sumerge Sam2 Authentication Core is a ready to use library for adding support fo
 
 Brief Introduction for Saml2 Sign In
 
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/Sumerge/Saml-Authentication/blob/main/flow.png?raw=true)
 
 
 1. The User attempt to access protected resource on service provider page.
