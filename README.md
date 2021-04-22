@@ -4,7 +4,8 @@ Sumerge Sam2 Authentication Core is a ready to use library for adding support fo
 
 Brief Introduction for Saml2 Sign In
 
-![](RackMultipart20210420-4-1n1y0u3_html_f7feb029ab78c963.gif)
+![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+
 
 1. The User attempt to access protected resource on service provider page.
 2. The Service provider redirect the user to the identity provider portal.
