@@ -124,10 +124,10 @@ routeTemplate: {controller}/{action}
 ```
 The SamlConfig can also be configured using a parameterized construtor as well 
 
-```
+```C#
  public SamlConfig(string ACSURL, string Issuer, String Destination, string EntityId, string SigningCertifcatePath, string SigningCertPass, string PublicCertificatePath)
         
-		```
+```
 
 ## Initiating the Request
 
